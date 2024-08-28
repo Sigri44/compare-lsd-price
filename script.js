@@ -168,13 +168,17 @@ const POOL_CONFIG = {
   },
 };
 
-async function getDexscreenerPoolPrice(chainName, poolAddress) {
-    const response = await fetch(`${DEXSCREENER_API_URI}/${chainName}/${poolAddress}`);
-    const jsonData = await response.json();
-    return Number(jsonData.pair.priceNative);
+async function getDexscreenerPoolData(chainName, poolAddress) {
+  const response = await fetch(`${DEXSCREENER_API_URI}/${chainName}/${poolAddress}`);
+  const jsonData = await response.json();
+
+  return {
+    price: Number(jsonData.pair.priceNative),
+    liquidity: Number(jsonData.pair.liquidity.usd)
+  }
 }
 
-async function getGeckoterminalPoolPrice(chainName, poolAddress) {
+async function getGeckoterminalPoolData(chainName, poolAddress) {
   let priceNative = 0;
 
   switch (chainName) {
@@ -207,7 +211,10 @@ async function getGeckoterminalPoolPrice(chainName, poolAddress) {
     }
   }
 
-  return Number(priceNative);
+  return {
+    price: Number(priceNative),
+    liquidity: Number(attributes.reserve_in_usd)
+  }
 }
 
 function populateTokenSelect() {
@@ -227,20 +234,26 @@ async function getPoolPrices(token) {
 
   for (const [chainName, protocols] of Object.entries(chains)) {
     for (const [protocolName, poolInfo] of Object.entries(protocols)) {
-      let dexScreenerPrice = {};
-      let geckoTerminalPrice = {};
+      let dexScreenerPrice = 0;
+      let geckoTerminalPrice = 0;
+      let dexScreenerLiquidity = 0;
+      let geckoTerminalLiquidity = 0;
       const address = poolInfo.address;
       
       // Dexscreener price
       try {
-        dexScreenerPrice = await getDexscreenerPoolPrice(chainName, address);
+        const dexscreenerData = await getDexscreenerPoolData(chainName, address);
+        dexScreenerPrice = dexscreenerData.price;
+        dexScreenerLiquidity = dexscreenerData.liquidity;
       } catch (error) {
         dexScreenerPrice = '';
         console.error(`[DexScreener] Error fetching prices for ${chainName} - ${protocolName}:`, error);
       }
       // GeckoTerminal price
       try {
-        geckoTerminalPrice = await getGeckoterminalPoolPrice(chainName, address);
+        const geckoterminalData = await getGeckoterminalPoolData(chainName, address);
+        geckoTerminalPrice = geckoterminalData.price;
+        geckoTerminalLiquidity = geckoterminalData.liquidity;
       } catch (error) {
         geckoTerminalPrice = '';
         console.error(`[GeckoTerminal] Error fetching prices for ${chainName} - ${protocolName}:`, error);
@@ -257,8 +270,10 @@ async function getPoolPrices(token) {
         address: address,
         dexScreenerPrice: dexScreenerPrice ? dexScreenerPrice.toFixed(5) : '',
         dexScreenerDiff: dexScreenerPrice ? ((originalPrice - dexScreenerPrice) / originalPrice * 100).toFixed(3) : '',
+        dexScreenerLiquidity: dexScreenerLiquidity,
         geckoTerminalPrice: geckoTerminalPrice ? geckoTerminalPrice.toFixed(5) : '',
         geckoTerminalDiff: geckoTerminalPrice ? ((originalPrice - geckoTerminalPrice) / originalPrice * 100).toFixed(3) : '',
+        geckoTerminalLiquidity: geckoTerminalLiquidity,
         dexScreenerLink: `${DEXSCREENER_URI}/${chainName}/${address}`,
         geckoTerminalLink: `${GECKOTERMINAL_URI}/${chainName}/pools/${address}`
       });
@@ -274,6 +289,18 @@ function getColorForDiff(diff) {
   return `background-color: rgba(255, 0, 0, ${intensity})`;
 }
 
+function formatLiquidity(liquidity) {
+  if (liquidity >= 1000000000) {
+    return '/';
+  } else if (liquidity >= 1000000) {
+    return (liquidity / 1000000).toFixed(2) + 'M';
+  } else if (liquidity >= 1000) {
+    return (liquidity / 1000).toFixed(2) + 'k';
+  } else {
+    return liquidity.toFixed(2);
+  }
+}
+
 function displayResults(token, results) {
   const resultDiv = document.getElementById('result');
   let html = `<h2>${token}</h2>`;
@@ -284,8 +311,10 @@ function displayResults(token, results) {
               <th>Protocol</th>
               <th>DexScreener Price</th>
               <th>DexScreener Diff</th>
+              <th>DexScreener Liquidity</th>
               <th>GeckoTerminal Price</th>
               <th>GeckoTerminal Diff</th>
+              <th>GeckoTerminal Liquidity</th>
               <th>Contract address</th>
               <th>Dexscreener link</th>
               <th>Geckoterminal link</th>
@@ -301,8 +330,10 @@ function displayResults(token, results) {
       <td>${result.protocol}</td>
       <td>${result.dexScreenerPrice}</td>
       <td style="${getColorForDiff(dexScreenerDiff)}">${dexScreenerDiff} %</td>
+      <td>${formatLiquidity(result.dexScreenerLiquidity)}</td>
       <td>${result.geckoTerminalPrice}</td>
       <td style="${getColorForDiff(geckoTerminalDiff)}">${geckoTerminalDiff} %</td>
+      <td>${formatLiquidity(result.geckoTerminalLiquidity)}</td>
       <td>${result.address}</td>
       <td><a href="${result.dexScreenerLink}" target="_blank">Dexscreener link</td>
       <td><a href="${result.geckoTerminalLink}" target="_blank">GeckoTerminal link</td>
