@@ -100,8 +100,6 @@ const POOL_CONFIG = {
       "Uniswap": {
         "address": "0x553e9C493678d8606d6a5ba284643dB2110Df823"
       },
-    },
-    "ethereum": {
       "Balancer": {
         "address": "0x1e19cf2d73a72ef1332c882f20534b6519be0276"
       }
@@ -177,38 +175,39 @@ async function getDexscreenerPoolPrice(chainName, poolAddress) {
 }
 
 async function getGeckoterminalPoolPrice(chainName, poolAddress) {
-    let priceNative = 0;
+  let priceNative = 0;
 
-    switch (chainName) {
-        case 'ethereum':
-            chainName = 'eth';
-            break;
-        case 'manta':
-            chainName = 'manta-pacific';
-            break;
-        case 'gnosis':
-            chainName = 'xdai';
-            break;
+  switch (chainName) {
+    case 'ethereum':
+      chainName = 'eth';
+      break;
+    case 'manta':
+      chainName = 'manta-pacific';
+      break;
+    case 'gnosis':
+      chainName = 'xdai';
+      break;
+  }
+
+  const URI = `${GECKOTERMINAL_API_URI}/networks/${chainName}/pools/${poolAddress}`;
+  const response = await fetch(URI);
+  const jsonData = await response.json();
+  const attributes = jsonData.data.attributes;
+
+  if (attributes.name.includes("USD")) {
+    priceNative = attributes.base_token_price_usd;
+  } else {
+    priceNative = attributes.base_token_price_native_currency;
+    if (priceNative > 2) {
+      priceNative = attributes.base_token_price_quote_token;
+      if (priceNative > 2 || priceNative < 1) {
+        // priceNative = attributes.base_token_price_usd / attributes.quote_token_price_native_currency;
+        priceNative = attributes.base_token_price_usd / attributes.quote_token_price_usd;
+      }
     }
+  }
 
-    const URI = `${GECKOTERMINAL_API_URI}/networks/${chainName}/pools/${poolAddress}`;
-    const response = await fetch(URI);
-    const jsonData = await response.json();
-
-    const attributes = jsonData.data.attributes;
-    if (attributes.name.includes("USD")) {
-        priceNative = attributes.base_token_price_usd;
-    } else {
-        priceNative = attributes.base_token_price_native_currency;
-        if (priceNative > 2) {
-            priceNative = attributes.base_token_price_quote_token;
-            if (priceNative > 2 || priceNative < 1) {
-                priceNative = attributes.base_token_price_usd / attributes.quote_token_price_native_currency;
-            }
-        }
-    }
-
-    return Number(priceNative);
+  return Number(priceNative);
 }
 
 function populateTokenSelect() {
@@ -236,14 +235,14 @@ async function getPoolPrices(token) {
       try {
         dexScreenerPrice = await getDexscreenerPoolPrice(chainName, address);
       } catch (error) {
-        dexScreenerPrice = 0;
+        dexScreenerPrice = '';
         console.error(`[DexScreener] Error fetching prices for ${chainName} - ${protocolName}:`, error);
       }
       // GeckoTerminal price
       try {
         geckoTerminalPrice = await getGeckoterminalPoolPrice(chainName, address);
       } catch (error) {
-        geckoTerminalPrice = 0;
+        geckoTerminalPrice = '';
         console.error(`[GeckoTerminal] Error fetching prices for ${chainName} - ${protocolName}:`, error);
       }
 
@@ -256,16 +255,23 @@ async function getPoolPrices(token) {
         chain: chainName,
         protocol: protocolName,
         address: address,
-        dexScreenerPrice: dexScreenerPrice.toFixed(5),
-        dexScreenerDiff: ((originalPrice - dexScreenerPrice) / originalPrice * 100).toFixed(3),
-        geckoTerminalPrice: geckoTerminalPrice.toFixed(5),
-        geckoTerminalDiff: ((originalPrice - geckoTerminalPrice) / originalPrice * 100).toFixed(3),
+        dexScreenerPrice: dexScreenerPrice ? dexScreenerPrice.toFixed(5) : '',
+        dexScreenerDiff: dexScreenerPrice ? ((originalPrice - dexScreenerPrice) / originalPrice * 100).toFixed(3) : '',
+        geckoTerminalPrice: geckoTerminalPrice ? geckoTerminalPrice.toFixed(5) : '',
+        geckoTerminalDiff: geckoTerminalPrice ? ((originalPrice - geckoTerminalPrice) / originalPrice * 100).toFixed(3) : '',
         dexScreenerLink: `${DEXSCREENER_URI}/${chainName}/${address}`,
         geckoTerminalLink: `${GECKOTERMINAL_URI}/${chainName}/pools/${address}`
       });
     }
   }
   return results;
+}
+
+function getColorForDiff(diff) {
+  if (diff === '') return '';
+  const absValue = Math.abs(parseFloat(diff));
+  const intensity = Math.min(absValue * 1.5, 100);
+  return `background-color: rgba(255, 0, 0, ${intensity})`;
 }
 
 function displayResults(token, results) {
@@ -287,13 +293,16 @@ function displayResults(token, results) {
   `;
     
   results.forEach(result => {
+    const dexScreenerDiff = result.dexScreenerPrice === '0.00000' ? '' : `${result.dexScreenerDiff}`;
+    const geckoTerminalDiff = result.geckoTerminalPrice === '0.00000' ? '' : `${result.geckoTerminalDiff}`;
+    
     html += `<tr>
       <td>${result.chain}</td>
       <td>${result.protocol}</td>
       <td>${result.dexScreenerPrice}</td>
-      <td>${result.dexScreenerDiff} %</td>
+      <td style="${getColorForDiff(dexScreenerDiff)}">${dexScreenerDiff} %</td>
       <td>${result.geckoTerminalPrice}</td>
-      <td>${result.geckoTerminalDiff} %</td>
+      <td style="${getColorForDiff(geckoTerminalDiff)}">${geckoTerminalDiff} %</td>
       <td>${result.address}</td>
       <td><a href="${result.dexScreenerLink}" target="_blank">Dexscreener link</td>
       <td><a href="${result.geckoTerminalLink}" target="_blank">GeckoTerminal link</td>
