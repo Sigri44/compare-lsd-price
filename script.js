@@ -108,10 +108,16 @@ const POOL_CONFIG = {
       "Uniswap": {
         "address": "0x09ba302a3f5ad2bf8853266e271b005a5b3716fe"
       },
+      "Pancakeswap": {
+        "address": "0xc75908421566ea77a73b14d9cd0479c568f2b7a7"
+      }
     },
     "optimism": {
       "Beethoven": {
         "address": "0x4fd63966879300cafafbb35d157dc5229278ed23"
+      },
+      "Velodrome": {
+        "address": "0x985612ff2c9409174fedcff23d4f4761af124f88"
       }
     },
     "gnosis": {
