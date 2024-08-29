@@ -242,34 +242,39 @@ async function getPoolPrices(token) {
   if (token === 'wstETH') {
     try {
       const response = await fetch(`${GATEWAY_API_URI}?network=ethereum&function=getLidoRedeemPrice`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
       originalPrice = await response.json();
-      results.push({
-        chain: 'ethereum',
-        protocol: 'redeem',
-        address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
-        dexScreenerPrice: originalPrice.toFixed(5),
-        dexScreenerDiff: '',
-        dexScreenerLiquidity: '',
-        geckoTerminalPrice:  '',
-        geckoTerminalDiff: '',
-        geckoTerminalLiquidity: '',
-        dexScreenerLink: '',
-        geckoTerminalLink: ''
-      });
     } catch (error) {
-      console.error('Error fetching Lido redeem price:', error);
+      console.error('Error fetching redeem price:', error);
     }
 
     console.log('lidoRedeemPrice', stockRedeemPrice);
-    exit();
   } else if (token === 'rETH') {
-    originalPrice = 1;
+    try {
+      const response = await fetch(`${GATEWAY_API_URI}?network=ethereum&function=getRocketpoolRedeemPrice`);
+      originalPrice = await response.json();
+    } catch (error) {
+      console.error('Error fetching redeem price:', error);
+    }
+
+    console.log('lidoRedeemPrice', stockRedeemPrice);
   } else if (token === 'weETH') {
     originalPrice = 1;
   }
+
+  // Add redeem price
+  results.push({
+    chain: 'ethereum',
+    protocol: 'redeem',
+    address: '',
+    dexScreenerPrice: originalPrice.toFixed(5),
+    dexScreenerDiff: '',
+    dexScreenerLiquidity: '',
+    geckoTerminalPrice:  '',
+    geckoTerminalDiff: '',
+    geckoTerminalLiquidity: '',
+    dexScreenerLink: '',
+    geckoTerminalLink: ''
+  });
 
   for (const [chainName, protocols] of Object.entries(chains)) {
     for (const [protocolName, poolInfo] of Object.entries(protocols)) {
