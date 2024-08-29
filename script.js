@@ -3,7 +3,7 @@ const GECKOTERMINAL_URI = 'https://www.geckoterminal.com/';
 const DEXSCREENER_API_URI = 'https://api.dexscreener.com/latest/dex/pairs';
 const GECKOTERMINAL_API_URI = 'https://api.geckoterminal.com/api/v2';
 const GATEWAY_API_URI = 'https://gateway.blockchain.diggercapital.eu';
-const GATEWAY_ENDPOINT = '?network=ethereum&function=getRedeemPric&token=';
+const GATEWAY_ENDPOINT = '?network=ethereum&function=getRedeemPrice&token=';
 
 const POOL_CONFIG = {
   "wstETH": {
@@ -242,7 +242,8 @@ async function getPoolPrices(token) {
 
   if (token === 'wstETH' || token === 'rETH' || token === 'weETH') {
     try {
-      const response = await fetch(`${GATEWAY_API_URI} + ${GATEWAY_ENDPOINT} + ${token}`);
+      const response = await fetch(`${GATEWAY_API_URI}${GATEWAY_ENDPOINT}${token}`);
+      console.log("uri::", `${GATEWAY_API_URI}${GATEWAY_ENDPOINT}${token}`);
       originalPrice = await response.json();
     } catch (error) {
       console.error('Error fetching redeem price:', error);
@@ -265,7 +266,7 @@ async function getPoolPrices(token) {
       geckoTerminalLink: ''
     });
   }
-  
+
   for (const [chainName, protocols] of Object.entries(chains)) {
     for (const [protocolName, poolInfo] of Object.entries(protocols)) {
       let dexScreenerPrice = 0;
