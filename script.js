@@ -326,7 +326,6 @@ function getColorForDiff(diff) {
 
 function formatLiquidity(liquidity) {
   if (liquidity === '' || liquidity === 0) return '';
-  console.log("liquidity::", liquidity);
   if (liquidity >= 1000000000) {
     return '/';
   } else if (liquidity >= 1000000) {
