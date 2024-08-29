@@ -304,10 +304,10 @@ async function getPoolPrices(token) {
         protocol: protocolName,
         address: address,
         dexScreenerPrice: dexScreenerPrice ? dexScreenerPrice.toFixed(5) : '',
-        dexScreenerDiff: dexScreenerPrice ? ((originalPrice - dexScreenerPrice) / originalPrice * 100).toFixed(3) : '',
+        dexScreenerDiff: dexScreenerPrice ? ((dexScreenerPrice - originalPrice) / originalPrice * 100).toFixed(3) : '',
         dexScreenerLiquidity: dexScreenerLiquidity,
         geckoTerminalPrice: geckoTerminalPrice ? geckoTerminalPrice.toFixed(5) : '',
-        geckoTerminalDiff: geckoTerminalPrice ? ((originalPrice - geckoTerminalPrice) / originalPrice * 100).toFixed(3) : '',
+        geckoTerminalDiff: geckoTerminalPrice ? ((geckoTerminalPrice - originalPrice) / originalPrice * 100).toFixed(3) : '',
         geckoTerminalLiquidity: geckoTerminalLiquidity,
         dexScreenerLink: `${DEXSCREENER_URI}/${chainName}/${address}`,
         geckoTerminalLink: `${GECKOTERMINAL_URI}/${chainName}/pools/${address}`
@@ -325,7 +325,7 @@ function getColorForDiff(diff) {
 }
 
 function formatLiquidity(liquidity) {
-  if (liquidity === '') return '';
+  if (liquidity === '' || liquidity === 0) return '';
   console.log("liquidity::", liquidity);
   if (liquidity >= 1000000000) {
     return '/';
