@@ -3,6 +3,7 @@ const GECKOTERMINAL_URI = 'https://www.geckoterminal.com/';
 const DEXSCREENER_API_URI = 'https://api.dexscreener.com/latest/dex/pairs';
 const GECKOTERMINAL_API_URI = 'https://api.geckoterminal.com/api/v2';
 const GATEWAY_API_URI = 'https://gateway.blockchain.diggercapital.eu';
+const GATEWAY_ENDPOINT = '?network=ethereum&function=getRedeemPric&token=';
 
 const POOL_CONFIG = {
   "wstETH": {
@@ -239,43 +240,32 @@ async function getPoolPrices(token) {
   const chains = POOL_CONFIG[token];
   let originalPrice = 0;
 
-  if (token === 'wstETH') {
+  if (token === 'wstETH' || token === 'rETH' || token === 'weETH') {
     try {
-      const response = await fetch(`${GATEWAY_API_URI}?network=ethereum&function=getLidoRedeemPrice`);
+      const response = await fetch(`${GATEWAY_API_URI} + ${GATEWAY_ENDPOINT} + ${token}`);
       originalPrice = await response.json();
     } catch (error) {
       console.error('Error fetching redeem price:', error);
     }
 
-    console.log('lidoRedeemPrice', stockRedeemPrice);
-  } else if (token === 'rETH') {
-    try {
-      const response = await fetch(`${GATEWAY_API_URI}?network=ethereum&function=getRocketpoolRedeemPrice`);
-      originalPrice = await response.json();
-    } catch (error) {
-      console.error('Error fetching redeem price:', error);
-    }
+    console.log('redeemPrice', originalPrice);
 
-    console.log('lidoRedeemPrice', stockRedeemPrice);
-  } else if (token === 'weETH') {
-    originalPrice = 1;
+    // Add redeem price
+    results.push({
+      chain: 'ethereum',
+      protocol: 'redeem',
+      address: '',
+      dexScreenerPrice: originalPrice.toFixed(5),
+      dexScreenerDiff: '',
+      dexScreenerLiquidity: '',
+      geckoTerminalPrice:  '',
+      geckoTerminalDiff: '',
+      geckoTerminalLiquidity: '',
+      dexScreenerLink: '',
+      geckoTerminalLink: ''
+    });
   }
-
-  // Add redeem price
-  results.push({
-    chain: 'ethereum',
-    protocol: 'redeem',
-    address: '',
-    dexScreenerPrice: originalPrice.toFixed(5),
-    dexScreenerDiff: '',
-    dexScreenerLiquidity: '',
-    geckoTerminalPrice:  '',
-    geckoTerminalDiff: '',
-    geckoTerminalLiquidity: '',
-    dexScreenerLink: '',
-    geckoTerminalLink: ''
-  });
-
+  
   for (const [chainName, protocols] of Object.entries(chains)) {
     for (const [protocolName, poolInfo] of Object.entries(protocols)) {
       let dexScreenerPrice = 0;
