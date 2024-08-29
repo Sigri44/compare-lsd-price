@@ -2,6 +2,7 @@ const DEXSCREENER_URI = 'https://www.dexscreener.com/';
 const GECKOTERMINAL_URI = 'https://www.geckoterminal.com/';
 const DEXSCREENER_API_URI = 'https://api.dexscreener.com/latest/dex/pairs';
 const GECKOTERMINAL_API_URI = 'https://api.geckoterminal.com/api/v2';
+const GATEWAY_API_URI = 'https://gateway.blockchain.diggercapital.eu';
 
 const POOL_CONFIG = {
   "wstETH": {
@@ -238,6 +239,25 @@ async function getPoolPrices(token) {
   const chains = POOL_CONFIG[token];
   let originalPrice = 0;
 
+  if (token === 'wstETH') {
+    try {
+      const response = await fetch(`${GATEWAY_API_URI}?network=ethereum&function=getLidoRedeemPrice`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      originalPrice = await response.json();
+    } catch (error) {
+      console.error('Error fetching Lido redeem price:', error);
+    }
+
+    console.log('lidoRedeemPrice', stockRedeemPrice);
+    exit();
+  } else if (token === 'rETH') {
+    originalPrice = 1;
+  } else if (token === 'weETH') {
+    originalPrice = 1;
+  }
+
   for (const [chainName, protocols] of Object.entries(chains)) {
     for (const [protocolName, poolInfo] of Object.entries(protocols)) {
       let dexScreenerPrice = 0;
@@ -266,7 +286,7 @@ async function getPoolPrices(token) {
       }
 
       // Set original price
-      if (chainName === 'ethereum' && protocolName === 'Uniswap') {
+      if (chainName === 'ethereum' && protocolName === 'Uniswap' && originalPrice === 0) {
         originalPrice = dexScreenerPrice;
       }
 
