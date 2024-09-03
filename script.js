@@ -225,14 +225,40 @@ async function getGeckoterminalPoolData(chainName, poolAddress) {
   }
 }
 
-function populateTokenSelect() {
-    const select = document.getElementById('tokenSelect');
+function createTokenCheckboxes() {
+    const tokenCheckboxesDiv = document.getElementById('tokenCheckboxes');
     Object.keys(POOL_CONFIG).forEach(token => {
-        const option = document.createElement('option');
-        option.value = token;
-        option.textContent = token;
-        select.appendChild(option);
+        const checkbox = document.createElement('input');
+        console.log(checkbox);
+        checkbox.type = 'checkbox';
+        checkbox.id = `token-${token}`;
+        checkbox.value = token;
+
+        const label = document.createElement('label');
+        label.htmlFor = `token-${token}`;
+        label.textContent = token;
+
+        tokenCheckboxesDiv.appendChild(checkbox);
+        tokenCheckboxesDiv.appendChild(label);
     });
+}
+
+async function handleValidation() {
+    const selectedTokens = Array.from(document.querySelectorAll('#tokenCheckboxes input[type="checkbox"]:checked'))
+        .map(checkbox => checkbox.value);
+
+    if (selectedTokens.length === 0) {
+        alert('Veuillez sélectionner au moins un token.');
+        return;
+    }
+
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = ''; // Clear previous results
+
+    for (const token of selectedTokens) {
+        const results = await getPoolPrices(token);
+        displayResults(token, results);
+    }
 }
 
 async function getPoolPrices(token) {
@@ -377,18 +403,10 @@ function displayResults(token, results) {
   });
   
   html += '</table>';
-  resultDiv.innerHTML = html;
+  resultDiv.innerHTML += html;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    populateTokenSelect();
-    document.getElementById('tokenSelect').addEventListener('change', async (event) => {
-        const token = event.target.value;
-        if (token) {
-            const results = await getPoolPrices(token);
-            displayResults(token, results);
-        } else {
-            document.getElementById('result').innerHTML = '';
-        }
-    });
+    createTokenCheckboxes();
+    document.getElementById('validateButton').addEventListener('click', handleValidation);
 });
