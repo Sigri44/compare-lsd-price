@@ -3,7 +3,7 @@ const GECKOTERMINAL_URI = 'https://www.geckoterminal.com/';
 const DEXSCREENER_API_URI = 'https://api.dexscreener.com/latest/dex/pairs';
 const GECKOTERMINAL_API_URI = 'https://api.geckoterminal.com/api/v2';
 const GATEWAY_API_URI = 'https://gateway.blockchain.diggercapital.eu';
-const GATEWAY_ENDPOINT = '?network=ethereum&function=getRedeemPrice&token=';
+const GATEWAY_ENDPOINT = '?function=getRedeemPrice&token=';
 
 const POOL_CONFIG = {
   "wstETH": {
@@ -174,6 +174,57 @@ const POOL_CONFIG = {
       }
     },
   },
+  "rsETH": {
+    "arbitrum": {
+      "Uniswap": {
+        "address": "0x48b0ab72c2591849e678e7d6f272b75ef9b863f7"
+      },
+      "Ramses": {
+        "address": "0x2f804c07f0e7637520ed72af22e486da6a82613e"
+      },
+      "Camelot": {
+        "address": "0xb355cce5cbaf411bd56e3b092f5aa10a894083ae"
+      },
+      "Pancakeswap": {
+        "address": "0x4b89179dafe5c36ae611208b5590fef9153b7daa"
+      },
+    },
+    // "optimism": {
+    //   "Uniswap": {
+    //     "address": "0x83afbd6c4e804dd4dcca7acee967926bc3f408ac"
+    //   },
+    // },
+  },
+  "ezETH": {
+    "arbitrum": {
+      "Uniswap": {
+        "address": "0x1f0a76ae19f4b8b79e36886c71a989cd723365dc"
+      },
+      "Ramses": {
+        "address": "0x575f1691e6391a2fcf932f9b9dfd6dbfb4792c13"
+      },
+      "Camelot": {
+        "address": "0xaa45265a94c93802be9511e426933239117e658f"
+      },
+      "TraderJoe": {
+        "address": "0x8c0635ad0afd7aa9444af07da6c104dd79b58d82"
+      },
+    },
+    "base": {
+      "Uniswap": {
+        "address": "0x58603091b4da10685e114d85e330cab36e655627"
+      },
+      "Aerodrome": {
+        "address": "0xdc7ead706795eda3feda08ad519d9452badf2c0d"
+      },
+      "Aerodrome": {
+        "address": "0x497139e8435e01555ac1e3740fccab7aff149e02"
+      },
+    },
+  },
+  //0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811
+  // "pzETH": {
+  // },
 };
 
 async function getDexscreenerPoolData(chainName, poolAddress) {
@@ -266,10 +317,15 @@ async function getPoolPrices(token) {
   const chains = POOL_CONFIG[token];
   let originalPrice = 0;
 
-  if (token === 'wstETH' || token === 'rETH' || token === 'weETH') {
+  if (token === 'wstETH' || token === 'rETH' || token === 'weETH' || token === 'rsETH') {
     try {
-      const response = await fetch(`${GATEWAY_API_URI}${GATEWAY_ENDPOINT}${token}`);
-      console.log("uri::", `${GATEWAY_API_URI}${GATEWAY_ENDPOINT}${token}`);
+      let network = 'ethereum';
+      if (token === 'rsETH') {
+        network = 'optimism';
+      }
+      uri = `${GATEWAY_API_URI}${GATEWAY_ENDPOINT}${token}`+'&network='+`${network}`;
+      const response = await fetch(uri);
+      console.log("uri::", uri);
       originalPrice = await response.json();
     } catch (error) {
       console.error('Error fetching redeem price:', error);
