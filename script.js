@@ -316,13 +316,13 @@ async function getPoolPrices(token) {
   const results = [];
   const chains = POOL_CONFIG[token];
   let originalPrice = 0;
+  let network = 'ethereum';
+  if (token === 'rsETH') {
+    network = 'optimism';
+  }
 
   if (token === 'wstETH' || token === 'rETH' || token === 'weETH' || token === 'rsETH') {
     try {
-      let network = 'ethereum';
-      if (token === 'rsETH') {
-        network = 'optimism';
-      }
       uri = `${GATEWAY_API_URI}${GATEWAY_ENDPOINT}${token}`+'&network='+`${network}`;
       const response = await fetch(uri);
       console.log("uri::", uri);
@@ -335,7 +335,7 @@ async function getPoolPrices(token) {
 
     // Add redeem price
     results.push({
-      chain: 'ethereum',
+      chain: network,
       protocol: 'redeem',
       address: '',
       dexScreenerPrice: originalPrice.toFixed(5),
