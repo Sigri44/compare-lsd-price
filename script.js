@@ -33,6 +33,11 @@ const POOL_CONFIG = {
         "address": "0x04f6c85a1b00f6d9b75f91fd23835974cc07e65c"
       }
     },
+    "bsc": {
+      "PancakeSwap": {
+        "address": "0x6cb5392b9ca52d7a0e6940e82d29087361360ec3"
+      }
+    },
     "gnosis": {
       "Balancer": {
         "address": "0xbad20c15a773bf03ab973302f61fabcea5101f0a"
