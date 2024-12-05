@@ -4,6 +4,7 @@ const DEXSCREENER_API_URI = 'https://api.dexscreener.com/latest/dex/pairs';
 const GECKOTERMINAL_API_URI = 'https://api.geckoterminal.com/api/v2';
 const GATEWAY_API_URI = 'https://gateway.blockchain.diggercapital.eu';
 const GATEWAY_ENDPOINT = '?function=getRedeemPrice&token=';
+const DEXSCREENER_IMG_URI = 'https://dd.dexscreener.com/ds-data/chains/';
 
 const POOL_CONFIG = {
   "wstETH": {
@@ -38,7 +39,7 @@ const POOL_CONFIG = {
         "address": "0x6cb5392b9ca52d7a0e6940e82d29087361360ec3"
       }
     },
-    "gnosis": {
+    "gnosischain": {
       "Balancer": {
         "address": "0xbad20c15a773bf03ab973302f61fabcea5101f0a"
       }
@@ -127,7 +128,7 @@ const POOL_CONFIG = {
         "address": "0x985612ff2c9409174fedcff23d4f4761af124f88"
       }
     },
-    "gnosis": {
+    "gnosischain": {
       "Balancer": {
         "address": "0x71e1179c5e197fa551beec85ca2ef8693c61b85b"
       }
@@ -457,7 +458,7 @@ function displayResults(token, results) {
     const geckoTerminalDiff = result.geckoTerminalPrice === '0.00000' ? '' : `${result.geckoTerminalDiff}`;
     
     html += `<tr>
-      <td>${result.chain}</td>
+      <td style="text-align: center;"><img src="${DEXSCREENER_IMG_URI}${result.chain}.png" alt="${result.chain} logo" style="width: 25%;"></td>
       <td>${result.protocol}</td>
       <td>${result.dexScreenerPrice}</td>
       <td style="${getColorForDiff(dexScreenerDiff)}">${dexScreenerDiff} %</td>
