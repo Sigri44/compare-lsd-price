@@ -179,7 +179,7 @@ const POOL_CONFIG = {
       }
     },
   },
-  "rsETH": {
+  "(w)rsETH": {
     "arbitrum": {
       "Uniswap": {
         "address": "0x48b0ab72c2591849e678e7d6f272b75ef9b863f7"
@@ -194,11 +194,19 @@ const POOL_CONFIG = {
         "address": "0x4b89179dafe5c36ae611208b5590fef9153b7daa"
       },
     },
-    // "optimism": {
-    //   "Uniswap": {
-    //     "address": "0x83afbd6c4e804dd4dcca7acee967926bc3f408ac"
-    //   },
-    // },
+    "optimism": {
+      "BeethovenX": {
+        "address": "0x73a7fe27fe9545d53924e529acf11f3073841b9e"
+      },
+      "Velodrome": {
+        "address": "0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9"
+      },
+    },
+    "base": {
+      "Aerodrome": {
+        "address": "0xa24382874a6fd59de45bbccfa160488647514c28"
+      },
+    }
   },
   "ezETH": {
     "arbitrum": {
