@@ -179,7 +179,7 @@ const POOL_CONFIG = {
       }
     },
   },
-  "(w)rsETH": {
+  "rsETH": {
     "arbitrum": {
       "Uniswap": {
         "address": "0x48b0ab72c2591849e678e7d6f272b75ef9b863f7"
