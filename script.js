@@ -210,6 +210,14 @@ const POOL_CONFIG = {
     }
   },
   "ezETH": {
+    "ethereum": {
+      "Balancer": {
+        "address": "0x596192bb6e41802428ac943d2f1476c1af25cc0e"
+      },
+      "Uniswap": {
+        "address": "0x18ee78020f63bd081fbce9d564db95bce3e72952"
+      },
+    },
     "arbitrum": {
       "Uniswap": {
         "address": "0x1f0a76ae19f4b8b79e36886c71a989cd723365dc"
