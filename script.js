@@ -32,6 +32,9 @@ const POOL_CONFIG = {
     "optimism": {
       "Uniswap": {
         "address": "0x04f6c85a1b00f6d9b75f91fd23835974cc07e65c"
+      },
+      "Velodrome": {
+        "address": "0xbf30ff33cf9c6b0c48702ff17891293b002dfea4"
       }
     },
     "bsc": {
