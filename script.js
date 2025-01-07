@@ -5,6 +5,8 @@ const GECKOTERMINAL_API_URI = 'https://api.geckoterminal.com/api/v2';
 const GATEWAY_API_URI = 'https://gateway.blockchain.diggercapital.eu';
 const GATEWAY_ENDPOINT = '?function=getRedeemPrice&token=';
 const DEXSCREENER_IMG_URI = 'https://dd.dexscreener.com/ds-data/chains/';
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes en millisecondes
+const priceCache = new Map();
 
 const POOL_CONFIG = {
   "wstETH": {
@@ -214,9 +216,7 @@ const POOL_CONFIG = {
       "Balancer": {
         "address": "0x596192bb6e41802428ac943d2f1476c1af25cc0e"
       },
-      "Uniswap": {
-        "address": "0x18ee78020f63bd081fbce9d564db95bce3e72952"
-      },
+
     },
     "arbitrum": {
       "Uniswap": {
@@ -249,60 +249,119 @@ const POOL_CONFIG = {
   // },
 };
 
-async function getDexscreenerPoolData(chainName, poolAddress) {
-  const response = await fetch(`${DEXSCREENER_API_URI}/${chainName}/${poolAddress}`);
-  const jsonData = await response.json();
+function getCacheKey(type, chainName, poolAddress) {
+  return `${type}-${chainName}-${poolAddress}`;
+}
 
-  return {
-    price: Number(jsonData.pair.priceNative),
-    liquidity: Number(jsonData.pair.liquidity.usd)
+async function getDexscreenerPoolData(chainName, poolAddress) {
+  const cacheKey = getCacheKey('dexscreener', chainName, poolAddress);
+  
+  // Vérifier le cache
+  const cachedData = priceCache.get(cacheKey);
+  if (cachedData && (Date.now() - cachedData.timestamp) < CACHE_DURATION) {
+    return cachedData.data;
+  }
+
+  try {
+    const response = await fetch(`${DEXSCREENER_API_URI}/${chainName}/${poolAddress}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const jsonData = await response.json();
+
+    const data = {
+      price: Number(jsonData.pair?.priceNative) || 0,
+      liquidity: Number(jsonData.pair?.liquidity?.usd) || 0
+    };
+
+    // Mettre en cache
+    priceCache.set(cacheKey, {
+      timestamp: Date.now(),
+      data: data
+    });
+
+    return data;
+  } catch (error) {
+    console.error(`[DexScreener] Error for ${chainName}/${poolAddress}:`, error);
+    return { price: 0, liquidity: 0 };
   }
 }
 
-async function getGeckoterminalPoolData(chainName, poolAddress) {
-  let priceNative = 0;
-
-  switch (chainName) {
-    case 'ethereum':
-      chainName = 'eth';
-      break;
-    case 'manta':
-      chainName = 'manta-pacific';
-      break;
-    case 'gnosis':
-      chainName = 'xdai';
-      break;
-  }
-
-  const URI = `${GECKOTERMINAL_API_URI}/networks/${chainName}/pools/${poolAddress}`;
-  const response = await fetch(URI);
-  const jsonData = await response.json();
-  const attributes = jsonData.data.attributes;
-
+function calculateGeckoPrice(attributes) {
+  let priceNative;
+  
   if (attributes.name.includes("USD")) {
     priceNative = attributes.base_token_price_usd;
   } else {
     priceNative = attributes.base_token_price_native_currency;
+    
     if (priceNative > 2) {
       priceNative = attributes.base_token_price_quote_token;
+      
       if (priceNative > 2 || priceNative < 1) {
-        // priceNative = attributes.base_token_price_usd / attributes.quote_token_price_native_currency;
         priceNative = attributes.base_token_price_usd / attributes.quote_token_price_usd;
       }
     }
   }
+  
+  return priceNative;
+}
 
-  return {
-    price: Number(priceNative),
-    liquidity: Number(attributes.reserve_in_usd)
+async function getGeckoterminalPoolData(chainName, poolAddress) {
+  const cacheKey = getCacheKey('geckoterminal', chainName, poolAddress);
+  
+  // Vérifier le cache
+  const cachedData = priceCache.get(cacheKey);
+  if (cachedData && (Date.now() - cachedData.timestamp) < CACHE_DURATION) {
+    return cachedData.data;
+  }
+
+  try {
+    const adjustedChainName = {
+      'ethereum': 'eth',
+      'manta': 'manta-pacific',
+      'gnosis': 'xdai'
+    }[chainName] || chainName;
+
+    const URI = `${GECKOTERMINAL_API_URI}/networks/${adjustedChainName}/pools/${poolAddress}`;
+    const response = await fetch(URI);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const jsonData = await response.json();
+    
+    const attributes = jsonData.data?.attributes;
+    if (!attributes) throw new Error('Invalid data structure');
+
+    const priceNative = calculateGeckoPrice(attributes);
+
+    const data = {
+      price: Number(priceNative) || 0,
+      liquidity: Number(attributes.reserve_in_usd) || 0
+    };
+
+    // Mettre en cache
+    priceCache.set(cacheKey, {
+      timestamp: Date.now(),
+      data: data
+    });
+
+    return data;
+  } catch (error) {
+    console.error(`[GeckoTerminal] Error for ${chainName}/${poolAddress}:`, error);
+    return { price: 0, liquidity: 0 };
   }
 }
 
 function createTokenCheckboxes() {
     const tokenCheckboxesDiv = document.getElementById('tokenCheckboxes');
+    tokenCheckboxesDiv.style.display = 'flex';
+    tokenCheckboxesDiv.style.alignItems = 'center';
+    tokenCheckboxesDiv.style.gap = '10px';
+
     Object.keys(POOL_CONFIG).forEach(token => {
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'inline-flex';
+        wrapper.style.alignItems = 'center';
+        wrapper.style.marginRight = '10px';
+
         const checkbox = document.createElement('input');
-        console.log(checkbox);
         checkbox.type = 'checkbox';
         checkbox.id = `token-${token}`;
         checkbox.value = token;
@@ -310,10 +369,18 @@ function createTokenCheckboxes() {
         const label = document.createElement('label');
         label.htmlFor = `token-${token}`;
         label.textContent = token;
+        label.style.marginLeft = '5px';
 
-        tokenCheckboxesDiv.appendChild(checkbox);
-        tokenCheckboxesDiv.appendChild(label);
+        wrapper.appendChild(checkbox);
+        wrapper.appendChild(label);
+        tokenCheckboxesDiv.appendChild(wrapper);
     });
+
+    const validateButton = document.getElementById('validateButton');
+    if (validateButton) {
+        validateButton.style.marginLeft = '10px';
+        tokenCheckboxesDiv.appendChild(validateButton);
+    }
 }
 
 async function handleValidation() {
@@ -337,87 +404,82 @@ async function handleValidation() {
 async function getPoolPrices(token) {
   const results = [];
   const chains = POOL_CONFIG[token];
+  const network = token === 'rsETH' ? 'optimism' : 'ethereum';
+  
+  // Récupérer le prix de rachat en premier si nécessaire
   let originalPrice = 0;
-  let network = 'ethereum';
-  if (token === 'rsETH') {
-    network = 'optimism';
-  }
-
-  if (token === 'wstETH' || token === 'rETH' || token === 'weETH' || token === 'rsETH') {
+  if (['wstETH', 'rETH', 'weETH', 'rsETH', 'ezETH'].includes(token)) {
     try {
-      uri = `${GATEWAY_API_URI}${GATEWAY_ENDPOINT}${token}`+'&network='+`${network}`;
+      const uri = `${GATEWAY_API_URI}${GATEWAY_ENDPOINT}${token}&network=${network}`;
       const response = await fetch(uri);
-      console.log("uri::", uri);
       originalPrice = await response.json();
+      
+      results.push({
+        chain: network,
+        protocol: 'redeem',
+        address: '',
+        dexScreenerPrice: originalPrice.toFixed(5),
+        dexScreenerDiff: '',
+        dexScreenerLiquidity: '',
+        geckoTerminalPrice: '',
+        geckoTerminalDiff: '',
+        geckoTerminalLiquidity: '',
+        dexScreenerLink: '',
+        geckoTerminalLink: ''
+      });
     } catch (error) {
       console.error('Error fetching redeem price:', error);
     }
-
-    console.log('redeemPrice', originalPrice);
-
-    // Add redeem price
-    results.push({
-      chain: network,
-      protocol: 'redeem',
-      address: '',
-      dexScreenerPrice: originalPrice.toFixed(5),
-      dexScreenerDiff: '',
-      dexScreenerLiquidity: '',
-      geckoTerminalPrice:  '',
-      geckoTerminalDiff: '',
-      geckoTerminalLiquidity: '',
-      dexScreenerLink: '',
-      geckoTerminalLink: ''
-    });
   }
 
+  // Préparer tous les appels API en parallèle
+  const apiCalls = [];
   for (const [chainName, protocols] of Object.entries(chains)) {
     for (const [protocolName, poolInfo] of Object.entries(protocols)) {
-      let dexScreenerPrice = 0;
-      let geckoTerminalPrice = 0;
-      let dexScreenerLiquidity = 0;
-      let geckoTerminalLiquidity = 0;
       const address = poolInfo.address;
-      
-      // Dexscreener price
-      try {
-        const dexscreenerData = await getDexscreenerPoolData(chainName, address);
-        dexScreenerPrice = dexscreenerData.price;
-        dexScreenerLiquidity = dexscreenerData.liquidity;
-      } catch (error) {
-        dexScreenerPrice = '';
-        console.error(`[DexScreener] Error fetching prices for ${chainName} - ${protocolName}:`, error);
-      }
-      // GeckoTerminal price
-      try {
-        const geckoterminalData = await getGeckoterminalPoolData(chainName, address);
-        geckoTerminalPrice = geckoterminalData.price;
-        geckoTerminalLiquidity = geckoterminalData.liquidity;
-      } catch (error) {
-        geckoTerminalPrice = '';
-        console.error(`[GeckoTerminal] Error fetching prices for ${chainName} - ${protocolName}:`, error);
-      }
+      apiCalls.push(
+        Promise.all([
+          getDexscreenerPoolData(chainName, address),
+          getGeckoterminalPoolData(chainName, address)
+        ]).then(([dexData, geckoData]) => ({
+          chainName,
+          protocolName,
+          address,
+          dexData,
+          geckoData
+        }))
+      );
+    }
+  }
 
-      // Set original price
+  // Exécuter tous les appels en parallèle
+  const apiResults = await Promise.allSettled(apiCalls);
+
+  // Traiter les résultats
+  apiResults.forEach(result => {
+    if (result.status === 'fulfilled') {
+      const { chainName, protocolName, address, dexData, geckoData } = result.value;
+      
       if (chainName === 'ethereum' && protocolName === 'Uniswap' && originalPrice === 0) {
-        originalPrice = dexScreenerPrice;
+        originalPrice = dexData.price;
       }
 
       results.push({
         chain: chainName,
         protocol: protocolName,
         address: address,
-        dexScreenerPrice: dexScreenerPrice ? dexScreenerPrice.toFixed(5) : '',
-        dexScreenerDiff: dexScreenerPrice ? ((dexScreenerPrice - originalPrice) / originalPrice * 100).toFixed(3) : '',
-        dexScreenerLiquidity: dexScreenerLiquidity,
-        geckoTerminalPrice: geckoTerminalPrice ? geckoTerminalPrice.toFixed(5) : '',
-        geckoTerminalDiff: geckoTerminalPrice ? ((geckoTerminalPrice - originalPrice) / originalPrice * 100).toFixed(3) : '',
-        geckoTerminalLiquidity: geckoTerminalLiquidity,
+        dexScreenerPrice: dexData.price ? dexData.price.toFixed(5) : '',
+        dexScreenerDiff: dexData.price ? ((dexData.price - originalPrice) / originalPrice * 100).toFixed(3) : '',
+        dexScreenerLiquidity: dexData.liquidity,
+        geckoTerminalPrice: geckoData.price ? geckoData.price.toFixed(5) : '',
+        geckoTerminalDiff: geckoData.price ? ((geckoData.price - originalPrice) / originalPrice * 100).toFixed(3) : '',
+        geckoTerminalLiquidity: geckoData.liquidity,
         dexScreenerLink: `${DEXSCREENER_URI}/${chainName}/${address}`,
         geckoTerminalLink: `${GECKOTERMINAL_URI}/${chainName}/pools/${address}`
       });
     }
-  }
+  });
+
   return results;
 }
 
@@ -456,8 +518,8 @@ function displayResults(token, results) {
               <th>GeckoTerminal Diff</th>
               <th>GeckoTerminal Liquidity</th>
               <th>Contract address</th>
-              <th>Dexscreener link</th>
-              <th>Geckoterminal link</th>
+              <th>Dexscreener</th>
+              <th>Geckoterminal</th>
           </tr>
   `;
     
@@ -475,8 +537,8 @@ function displayResults(token, results) {
       <td style="${getColorForDiff(geckoTerminalDiff)}">${geckoTerminalDiff} %</td>
       <td>${formatLiquidity(result.geckoTerminalLiquidity)}</td>
       <td>${result.address}</td>
-      <td><a href="${result.dexScreenerLink}" target="_blank">Dexscreener link</td>
-      <td><a href="${result.geckoTerminalLink}" target="_blank">GeckoTerminal link</td>
+      <td><a href="${result.dexScreenerLink}" target="_blank">Dexscreener</td>
+      <td><a href="${result.geckoTerminalLink}" target="_blank">GeckoTerminal</td>
     </tr>`;
   });
   
