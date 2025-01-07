@@ -411,7 +411,7 @@ async function getPoolPrices(token) {
   
   // Récupérer le prix de rachat en premier si nécessaire
   let originalPrice = 0;
-  if (['wstETH', 'rETH', 'weETH', 'rsETH', 'ezETH'].includes(token)) {
+  if (['wstETH', 'rETH', 'weETH', 'rsETH', 'ezETH', 'cbETH'].includes(token)) {
     try {
       const uri = `${GATEWAY_API_URI}${GATEWAY_ENDPOINT}${token}&network=${network}`;
       const response = await fetch(uri);
