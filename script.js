@@ -95,6 +95,9 @@ const POOL_CONFIG = {
       },
       "Aerodrome": {
         "address": "0x47ca96ea59c13f72745928887f84c9f52c3d7348"
+      },
+      "Pancakeswap": {
+        "address": "0x257fcbae4ac6b26a02e4fc5e1a11e4174b5ce395"
       }
     },
     "arbitrum": {
