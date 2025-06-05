@@ -54,6 +54,11 @@ const POOL_CONFIG = {
         "address": "0x578ef5f3a3D34949A590aE7719E5Bd69a3720865"
       }
     },
+    "unichain": {
+      "Uniswap": {
+        "address": "0xd10d359f50ba8d1e0b6c30974a65bf06895fba4bf2b692b2c75d987d3b6b863d"
+      }
+    },
   },
   "weETH": {
     "ethereum": {
@@ -80,6 +85,11 @@ const POOL_CONFIG = {
     "optimism": {
       "Uniswap": {
         "address": "0xef7aad9ce20625e5883933473dd49a60231426c0"
+      }
+    },
+    "unichain": {
+      "Uniswap": {
+        "address": "0xbb1e92b6f31285d432d9f9462ebc4a003dfe26d9bc47d44543a12d457f1d22f1"
       }
     },
   },
@@ -215,6 +225,11 @@ const POOL_CONFIG = {
       "Aerodrome": {
         "address": "0xa24382874a6fd59de45bbccfa160488647514c28"
       },
+    },
+    "unichain": {
+      "Uniswap": {
+        "address": "0x88cdc69f6be00de0b69f92de9ae0c4621fb6a3cdba582804010b182238c98dde"
+      },
     }
   },
   "ezETH": {
@@ -249,6 +264,11 @@ const POOL_CONFIG = {
         "address": "0x497139e8435e01555ac1e3740fccab7aff149e02"
       },
     },
+    "unichain": {
+      "Uniswap": {
+        "address": "0xc36db4be4a3bfded1a98dc1017b01db62f34aa02c92c6febeb277c87a6152ee8"
+      },
+    }
   },
   //0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811
   // "pzETH": {
