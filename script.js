@@ -109,7 +109,7 @@ const POOL_CONFIG = {
       "Pancakeswap": {
         "address": "0x257fcbae4ac6b26a02e4fc5e1a11e4174b5ce395"
       }
-    },
+    },  
     "arbitrum": {
       "Uniswap": {
         "address": "0xed3fe08bd12f24dad0f1a1e58610644debe374fb"
