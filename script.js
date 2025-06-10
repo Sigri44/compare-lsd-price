@@ -199,19 +199,27 @@ const POOL_CONFIG = {
     },
   },
   "rsETH": {
+    "ethereum": {
+      "Balancer": {
+        "address": "0x58aadfb1afac0ad7fca1148f3cde6aedf5236b6d"
+      },
+      "Uniswap": {
+        "address": "0x7a27c7b7e2536e452c57d3e8b909d9ecba2e2eee"
+      },
+    },
     "arbitrum": {
       "Uniswap": {
-        "address": "0x48b0ab72c2591849e678e7d6f272b75ef9b863f7"
+        "address": "0x5baf59a6e6df0ee95bce8c43daa05b288e340e7d"
       },
-      "Ramses": {
-        "address": "0x2f804c07f0e7637520ed72af22e486da6a82613e"
-      },
+      // "Ramses": {
+      //   "address": "0x2f804c07f0e7637520ed72af22e486da6a82613e"
+      // },
       "Camelot": {
         "address": "0xb355cce5cbaf411bd56e3b092f5aa10a894083ae"
       },
-      "Pancakeswap": {
-        "address": "0x4b89179dafe5c36ae611208b5590fef9153b7daa"
-      },
+      // "Pancakeswap": {
+      //   "address": "0x4b89179dafe5c36ae611208b5590fef9153b7daa"
+      // },
     },
     "optimism": {
       "BeethovenX": {
@@ -237,21 +245,20 @@ const POOL_CONFIG = {
       "Balancer": {
         "address": "0x596192bb6e41802428ac943d2f1476c1af25cc0e"
       },
-
     },
     "arbitrum": {
       "Uniswap": {
-        "address": "0x1f0a76ae19f4b8b79e36886c71a989cd723365dc"
+        "address": "0xa245416e3bed0e60dd76ef400de7396fc3f4caa3"
       },
-      "Ramses": {
-        "address": "0x575f1691e6391a2fcf932f9b9dfd6dbfb4792c13"
-      },
+      // "Ramses": {
+      //   "address": "0x575f1691e6391a2fcf932f9b9dfd6dbfb4792c13"
+      // },
       "Camelot": {
         "address": "0xaa45265a94c93802be9511e426933239117e658f"
       },
-      "TraderJoe": {
-        "address": "0x8c0635ad0afd7aa9444af07da6c104dd79b58d82"
-      },
+      // "TraderJoe": {
+      //   "address": "0x8c0635ad0afd7aa9444af07da6c104dd79b58d82"
+      // },
     },
     "base": {
       "Uniswap": {
@@ -262,6 +269,9 @@ const POOL_CONFIG = {
       },
       "Aerodrome": {
         "address": "0x497139e8435e01555ac1e3740fccab7aff149e02"
+      },
+      "Balancer": {
+        "address": "0x2416092f143378750bb29b79ed961ab195cceea5"
       },
     },
     "unichain": {
