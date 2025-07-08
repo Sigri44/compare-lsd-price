@@ -44,16 +44,16 @@ const POOL_CONFIG = {
         "address": "0x6cb5392b9ca52d7a0e6940e82d29087361360ec3"
       }
     },
-    "gnosischain": {
-      "Balancer": {
-        "address": "0xbad20c15a773bf03ab973302f61fabcea5101f0a"
-      }
-    },
-    "manta": {
-      "Uniswap": {
-        "address": "0x578ef5f3a3D34949A590aE7719E5Bd69a3720865"
-      }
-    },
+    // "gnosischain": {
+    //   "Balancer": {
+    //     "address": "0xbad20c15a773bf03ab973302f61fabcea5101f0a" // BAD : Not enough liquidity
+    //   }
+    // },
+    // "manta": {
+    //   "Uniswap": {
+    //     "address": "0x578ef5f3a3D34949A590aE7719E5Bd69a3720865" // BAD : Not enough liquidity
+    //   }
+    // },
     "unichain": {
       "Uniswap": {
         "address": "0xd10d359f50ba8d1e0b6c30974a65bf06895fba4bf2b692b2c75d987d3b6b863d"
@@ -83,9 +83,9 @@ const POOL_CONFIG = {
       }
     },
     "optimism": {
-      "Uniswap": {
-        "address": "0xef7aad9ce20625e5883933473dd49a60231426c0"
-      }
+      // "Uniswap": {
+      //   "address": "0xef7aad9ce20625e5883933473dd49a60231426c0" // BAD : Not enough liquidity
+      // }
     },
     "unichain": {
       "Uniswap": {
@@ -116,9 +116,9 @@ const POOL_CONFIG = {
       },
     },
     "optimism": {
-      "Velodrome": {
-        "address": "0x68387b6647742b11486e65078b39716469572962"
-      }
+      // "Velodrome": {
+      //   "address": "0x68387b6647742b11486e65078b39716469572962" // BAD : Not enough liquidity
+      // }
     },
   },
   "rETH": {
@@ -134,9 +134,9 @@ const POOL_CONFIG = {
       "Uniswap": {
         "address": "0x09ba302a3f5ad2bf8853266e271b005a5b3716fe"
       },
-      "Pancakeswap": {
-        "address": "0xc75908421566ea77a73b14d9cd0479c568f2b7a7"
-      }
+      // "Pancakeswap": {
+      //   "address": "0xc75908421566ea77a73b14d9cd0479c568f2b7a7"
+      // }
     },
     "optimism": {
       "Beethoven": {
@@ -147,9 +147,9 @@ const POOL_CONFIG = {
       }
     },
     "gnosischain": {
-      "Balancer": {
-        "address": "0x71e1179c5e197fa551beec85ca2ef8693c61b85b"
-      }
+      // "Balancer": {
+      //   "address": "0x71e1179c5e197fa551beec85ca2ef8693c61b85b"
+      // }
     },
   },
   "sfrxETH": {
@@ -203,14 +203,14 @@ const POOL_CONFIG = {
       "Balancer": {
         "address": "0x58aadfb1afac0ad7fca1148f3cde6aedf5236b6d"
       },
-      "Uniswap": {
-        "address": "0x7a27c7b7e2536e452c57d3e8b909d9ecba2e2eee"
-      },
+      // "Uniswap": {
+      //   "address": "0x7a27c7b7e2536e452c57d3e8b909d9ecba2e2eee" // BAD : wstETH
+      // },
     },
     "arbitrum": {
-      "Uniswap": {
-        "address": "0x5baf59a6e6df0ee95bce8c43daa05b288e340e7d"
-      },
+      // "Uniswap": {
+      //   "address": "0x5baf59a6e6df0ee95bce8c43daa05b288e340e7d" // BAD : wstETH
+      // },
       // "Ramses": {
       //   "address": "0x2f804c07f0e7637520ed72af22e486da6a82613e"
       // },
@@ -225,9 +225,9 @@ const POOL_CONFIG = {
       "BeethovenX": {
         "address": "0x73a7fe27fe9545d53924e529acf11f3073841b9e"
       },
-      "Velodrome": {
-        "address": "0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9"
-      },
+      // "Velodrome": {
+      //   "address": "0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9" // BAD : Not enough liquidity
+      // },
     },
     "base": {
       "Aerodrome": {
@@ -261,18 +261,18 @@ const POOL_CONFIG = {
       // },
     },
     "base": {
-      "Uniswap": {
-        "address": "0x58603091b4da10685e114d85e330cab36e655627"
-      },
+      // "Uniswap": {
+      //   "address": "0x58603091b4da10685e114d85e330cab36e655627"
+      // },
       "Aerodrome": {
         "address": "0xdc7ead706795eda3feda08ad519d9452badf2c0d"
       },
       "Aerodrome": {
         "address": "0x497139e8435e01555ac1e3740fccab7aff149e02"
       },
-      "Balancer": {
-        "address": "0x2416092f143378750bb29b79ed961ab195cceea5"
-      },
+      // "Balancer": {
+      //   "address": "0x2416092f143378750bb29b79ed961ab195cceea5"
+      // },
     },
     "unichain": {
       "Uniswap": {
