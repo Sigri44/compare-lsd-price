@@ -11,12 +11,12 @@ const priceCache = new Map();
 const POOL_CONFIG = {
   "wstETH": {
     "ethereum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x109830a1aaad605bbf02a9dfa7b0b92ec2fb7daa"
       },
     },
     "base": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x20e068d76f9e90b90604500b84c7e19dcb923e7e"
       },
       "Aerodrome": {
@@ -24,7 +24,7 @@ const POOL_CONFIG = {
       }
     },
     "arbitrum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x35218a1cbac5bbc3e57fd9bd38219d37571b3537"
       },
       "Camelot": {
@@ -32,7 +32,7 @@ const POOL_CONFIG = {
       }
     },
     "optimism": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x04f6c85a1b00f6d9b75f91fd23835974cc07e65c"
       },
       "Velodrome": {
@@ -50,19 +50,19 @@ const POOL_CONFIG = {
     //   }
     // },
     // "manta": {
-    //   "Uniswap": {
+    //   "UniswapV3": {
     //     "address": "0x578ef5f3a3D34949A590aE7719E5Bd69a3720865" // BAD : Not enough liquidity
     //   }
     // },
     "unichain": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xd10d359f50ba8d1e0b6c30974a65bf06895fba4bf2b692b2c75d987d3b6b863d"
       }
     },
   },
   "weETH": {
     "ethereum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x202a6012894ae5c288ea824cbc8a9bfb26a49b93"
       },
     },
@@ -73,34 +73,34 @@ const POOL_CONFIG = {
       "Ramses": {
         "address": "0x2d4bfb17db454cf582a74902c91fb09a3883a5cc"
       },
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xa169d1ab5c948555954d38700a6cdaa7a4e0c3a0"
       }
     },
     "base": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xb1419a7f9e8c6e434b1d05377e0dbc4154e3de78"
       }
     },
     "optimism": {
-      // "Uniswap": {
+      // "UniswapV3": {
       //   "address": "0xef7aad9ce20625e5883933473dd49a60231426c0" // BAD : Not enough liquidity
       // }
     },
     "unichain": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xbb1e92b6f31285d432d9f9462ebc4a003dfe26d9bc47d44543a12d457f1d22f1"
       }
     },
   },
   "cbETH": {
     "ethereum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x177622e79acece98c39f6e12fa78ac7fc8a8bf62"
       },
     },
     "base": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x10648ba41b8565907cfa1496765fa4d95390aa0d"
       },
       "Aerodrome": {
@@ -111,7 +111,7 @@ const POOL_CONFIG = {
       }
     },  
     "arbitrum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xed3fe08bd12f24dad0f1a1e58610644debe374fb"
       },
     },
@@ -123,7 +123,7 @@ const POOL_CONFIG = {
   },
   "rETH": {
     "ethereum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x553e9C493678d8606d6a5ba284643dB2110Df823"
       },
       "Balancer": {
@@ -131,7 +131,7 @@ const POOL_CONFIG = {
       }
     },
     "arbitrum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x09ba302a3f5ad2bf8853266e271b005a5b3716fe"
       },
       // "Pancakeswap": {
@@ -154,46 +154,49 @@ const POOL_CONFIG = {
   },
   "sfrxETH": {
     "fraxtal": {
-      "RA": {
-        "address": "0x52a3a6961da9f9567d22f6c0d6e2521175b4c39c"
+      // "RA": {
+      //   "address": "0x52a3a6961da9f9567d22f6c0d6e2521175b4c39c"
+      // },
+      "Curve": {
+        "address": "0xf2f426fe123de7b769b2d4f8c911512f065225d3"
       },
     },
   },
   "USDT": {
     "ethereum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x3416cf6c708da44db2624d63ea0aaef7113527c6"
       },
     },
     "arbitrum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xbe3ad6a5669dc0b8b12febc03608860c31e2eef6"
       },
     },
     "base": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xd56da2b74ba826f19015e6b7dd9dae1903e85da1"
       },
     },
     "manta": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x060f2babc09826687be9cbf5c7ede3b3cd00dd78"
       },
     },
   },
   "UNI": {
     "ethereum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xd0fc8ba7e267f2bc56044a7715a489d851dc6d78"
       },
     },
     "arbitrum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xd97c8ee1c1e47f50a66e69d5ad155f882e38b0e5"
       },
     },
     "base": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x35d84ae687f0d3bf8548d5470fd04d2abe74f074"
       }
     },
@@ -203,12 +206,12 @@ const POOL_CONFIG = {
       "Balancer": {
         "address": "0x58aadfb1afac0ad7fca1148f3cde6aedf5236b6d"
       },
-      // "Uniswap": {
+      // "UniswapV3": {
       //   "address": "0x7a27c7b7e2536e452c57d3e8b909d9ecba2e2eee" // BAD : wstETH
       // },
     },
     "arbitrum": {
-      // "Uniswap": {
+      // "UniswapV3": {
       //   "address": "0x5baf59a6e6df0ee95bce8c43daa05b288e340e7d" // BAD : wstETH
       // },
       // "Ramses": {
@@ -235,7 +238,7 @@ const POOL_CONFIG = {
       },
     },
     "unichain": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0x88cdc69f6be00de0b69f92de9ae0c4621fb6a3cdba582804010b182238c98dde"
       },
     }
@@ -247,7 +250,7 @@ const POOL_CONFIG = {
       },
     },
     "arbitrum": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xa245416e3bed0e60dd76ef400de7396fc3f4caa3"
       },
       // "Ramses": {
@@ -261,7 +264,7 @@ const POOL_CONFIG = {
       // },
     },
     "base": {
-      // "Uniswap": {
+      // "UniswapV3": {
       //   "address": "0x58603091b4da10685e114d85e330cab36e655627"
       // },
       "Aerodrome": {
@@ -275,11 +278,29 @@ const POOL_CONFIG = {
       // },
     },
     "unichain": {
-      "Uniswap": {
+      "UniswapV3": {
         "address": "0xc36db4be4a3bfded1a98dc1017b01db62f34aa02c92c6febeb277c87a6152ee8"
       },
     }
   },
+  "GHO": {
+    "ethereum": {
+      "UniswapV3": {
+        "address": "0x5c95d4b1c3321cf898d25949f41d50be2db5bc1d"
+      },
+      "BalancerV2": {
+        "address": "0x99e7b15df044e1b62e2e1774fd4469d54d9409ac"
+      }
+    },
+    "base": {
+      "UniswapV3": {
+        "address": "0xbaf56aed39b4583c526971ab51f8f2d4d8e59eb7"
+      },
+      "UniswapV4": {
+        "address": "0xcdcbb476543e5c703f7562009cb4e2a6c543dc09fe740abf8be0c01c31c82884"
+      }
+    }
+  }
   //0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811
   // "pzETH": {
   // },
@@ -324,7 +345,7 @@ async function getDexscreenerPoolData(chainName, poolAddress) {
 function calculateGeckoPrice(attributes) {
   let priceNative;
   
-  if (attributes.name.includes("USD")) {
+  if (attributes.name.includes("USD") || attributes.name.includes("GHO")) {
     priceNative = attributes.base_token_price_usd;
   } else {
     priceNative = attributes.base_token_price_native_currency;
@@ -466,6 +487,21 @@ async function getPoolPrices(token) {
     } catch (error) {
       console.error('Error fetching redeem price:', error);
     }
+  } else if (['USDT', 'GHO'].includes(token)) {
+    originalPrice = 1;
+    results.push({
+      chain: network,
+      protocol: 'PEG',
+      address: '',
+      dexScreenerPrice: originalPrice,
+      dexScreenerDiff: '',
+      dexScreenerLiquidity: '',
+      geckoTerminalPrice: '',
+      geckoTerminalDiff: '',
+      geckoTerminalLiquidity: '',
+      dexScreenerLink: '',
+      geckoTerminalLink: ''
+    });
   }
 
   // Préparer tous les appels API en parallèle
