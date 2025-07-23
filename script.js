@@ -161,6 +161,11 @@ const POOL_CONFIG = {
         "address": "0xf2f426fe123de7b769b2d4f8c911512f065225d3"
       },
     },
+    "optimism": {
+      "Velodrome": {
+        "address": "0xff5318f81dd791e92d51b8a54fa3538832d2890d"
+      },
+    }
   },
   "USDT": {
     "ethereum": {
