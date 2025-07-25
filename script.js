@@ -295,6 +295,9 @@ const POOL_CONFIG = {
       },
       "BalancerV2": {
         "address": "0x99e7b15df044e1b62e2e1774fd4469d54d9409ac"
+      },
+      "Curve (crvUSD)": {
+        "address": "0x635EF0056A597D13863B73825CcA297236578595"
       }
     },
     "base": {
