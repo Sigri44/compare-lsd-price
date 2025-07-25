@@ -55,7 +55,7 @@ const POOL_CONFIG = {
     //   }
     // },
     "unichain": {
-      "UniswapV3": {
+      "UniswapV4": {
         "address": "0xd10d359f50ba8d1e0b6c30974a65bf06895fba4bf2b692b2c75d987d3b6b863d"
       }
     },
