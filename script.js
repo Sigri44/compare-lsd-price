@@ -44,16 +44,19 @@ const POOL_CONFIG = {
         "address": "0x6cb5392b9ca52d7a0e6940e82d29087361360ec3"
       }
     },
-    // "gnosischain": {
+    "gnosischain": {
     //   "Balancer": {
     //     "address": "0xbad20c15a773bf03ab973302f61fabcea5101f0a" // BAD : Not enough liquidity
     //   }
     // },
+      "UniV3-like": {
+        "address": "0xbeb0a58e627fee7afc795ee9baaf9e4c934913d7"
+      }
     // "manta": {
     //   "UniswapV3": {
     //     "address": "0x578ef5f3a3D34949A590aE7719E5Bd69a3720865" // BAD : Not enough liquidity
     //   }
-    // },
+    },
     "unichain": {
       "UniswapV4": {
         "address": "0xd10d359f50ba8d1e0b6c30974a65bf06895fba4bf2b692b2c75d987d3b6b863d"
