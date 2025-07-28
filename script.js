@@ -307,6 +307,11 @@ const POOL_CONFIG = {
       "UniswapV4": {
         "address": "0xcdcbb476543e5c703f7562009cb4e2a6c543dc09fe740abf8be0c01c31c82884"
       }
+    },
+    "avalanche": {
+      "LFJ": {
+        "address": "0xd458e14e536c9586b66bfebd2783ad1093e3c5d1"
+      }
     }
   }
   //0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811
