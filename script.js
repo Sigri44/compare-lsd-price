@@ -155,11 +155,36 @@ const POOL_CONFIG = {
       // }
     },
   },
+  "frxETH": {
+    "ethereum": {
+      "Curve": {
+        "address": "0x9c3b46c0ceb5b9e304fcd6d88fc50f7dd24b31bc"
+      },
+      "Curve": {
+        "address": "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577"
+      },
+    },
+    "linea": {
+      "Etherex": {
+        "address": "0x8657f83c8ab3dc120bb25ff341ee79267d343c45"
+      },
+    },
+    "optimism": {
+      "Velodrome": {
+        "address": "0x6806411765Af15Bddd26f8f544A34cC40cb9838B"
+      },
+    },
+    "bsc": {
+      "ThenaV1": {
+        "address": "0x8a420aaca0c92e3f97cdcfdd852e01ac5b609452"
+      }
+    }
+  },
   "sfrxETH": {
     "fraxtal": {
-      // "RA": {
-      //   "address": "0x52a3a6961da9f9567d22f6c0d6e2521175b4c39c"
-      // },
+      "RA": {
+        "address": "0x52a3a6961da9f9567d22f6c0d6e2521175b4c39c"
+      },
       "Curve": {
         "address": "0xf2f426fe123de7b769b2d4f8c911512f065225d3"
       },
@@ -481,7 +506,7 @@ async function getPoolPrices(token) {
   
   // Récupérer le prix de rachat en premier si nécessaire
   let originalPrice = 0;
-  if (['wstETH', 'rETH', 'weETH', 'rsETH', 'ezETH', 'cbETH'].includes(token)) {
+  if (['wstETH', 'rETH', 'weETH', 'rsETH', 'ezETH', 'cbETH', 'sfrxETH'].includes(token)) {
     try {
       const uri = `${GATEWAY_API_URI}${GATEWAY_ENDPOINT}${token}&network=${network}`;
       const response = await fetch(uri);
@@ -503,7 +528,7 @@ async function getPoolPrices(token) {
     } catch (error) {
       console.error('Error fetching redeem price:', error);
     }
-  } else if (['USDT', 'GHO'].includes(token)) {
+  } else if (['USDT', 'GHO', 'frxETH'].includes(token)) {
     originalPrice = 1;
     results.push({
       chain: network,
@@ -610,7 +635,7 @@ function displayResults(token, results) {
               <th>Geckoterminal</th>
           </tr>
   `;
-    
+  
   results.forEach(result => {
     const dexScreenerDiff = result.dexScreenerPrice === '0.00000' ? '' : `${result.dexScreenerDiff}`;
     const geckoTerminalDiff = result.geckoTerminalPrice === '0.00000' ? '' : `${result.geckoTerminalDiff}`;
