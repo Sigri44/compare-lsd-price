@@ -341,6 +341,40 @@ const POOL_CONFIG = {
         "address": "0xd458e14e536c9586b66bfebd2783ad1093e3c5d1"
       }
     }
+  },
+  "crvUSD": {
+    "ethereum": {
+      "Curve(USDC)": {
+        "address": "0x4dece678ceceb27446b35c672dc7d61f30bad69e"
+      },
+      "Curve(USDT)": {
+        "address": "0x390f3595bca2df7d23783dfd126427cceb997bf4"
+      },
+      "UniswapV3": {
+        "address": "0x084565106618419274beed1b4ad4bdff77c5f90f"
+      },
+    },
+    "arbitrum": {
+      "Curve(USDC)": {
+        "address": "0xec090cf6dd891d2d014bea6edada6e05e025d93d"
+      },
+      "Curve(USDT)": {
+        "address": "0x73af1150f265419ef8a5db41908b700c32d49135"
+      },
+    },
+    "optimism": {
+      "Curve": {
+        "address": "0x03771e24b7c9172d163bf447490b142a15be3485"
+      }
+    },
+    "fraxtal": {
+      "Curve(FRAX)": {
+        "address": "0x63eb7846642630456707c3efbb50a03c79b89d81"
+      },
+      // "Curve(USDT)": {
+      //   "address": "0xb4d31111e6ff548f6fb43860da8de6fb932d5bb0"
+      // }
+    }
   }
   //0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811
   // "pzETH": {
@@ -528,7 +562,7 @@ async function getPoolPrices(token) {
     } catch (error) {
       console.error('Error fetching redeem price:', error);
     }
-  } else if (['USDT', 'GHO', 'frxETH'].includes(token)) {
+  } else if (['USDT', 'GHO', 'frxETH', 'crvUSD'].includes(token)) {
     originalPrice = 1;
     results.push({
       chain: network,
