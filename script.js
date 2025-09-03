@@ -95,6 +95,11 @@ const POOL_CONFIG = {
         "address": "0xbb1e92b6f31285d432d9f9462ebc4a003dfe26d9bc47d44543a12d457f1d22f1"
       }
     },
+    "linea": {
+      "etherex": {
+        "address": "0x4f919b2f681add2c0080cfbb1f3dd1ebc5af1415",
+      },
+    },
   },
   "cbETH": {
     "ethereum": {
@@ -274,7 +279,12 @@ const POOL_CONFIG = {
       "UniswapV3": {
         "address": "0x88cdc69f6be00de0b69f92de9ae0c4621fb6a3cdba582804010b182238c98dde"
       },
-    }
+    },
+    "linea": {
+      "etherex": {
+        "address": "0x3fd37f91f23d9d4c2d999a8ad8eed716d29e207f",
+      },
+    },
   },
   "ezETH": {
     "ethereum": {
