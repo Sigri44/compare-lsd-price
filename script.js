@@ -162,10 +162,10 @@ const POOL_CONFIG = {
   },
   "frxETH": {
     "ethereum": {
-      "Curve": {
+      "Curve1": {
         "address": "0x9c3b46c0ceb5b9e304fcd6d88fc50f7dd24b31bc"
       },
-      "Curve": {
+      "Curve2": {
         "address": "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577"
       },
     },
