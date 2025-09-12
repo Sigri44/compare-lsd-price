@@ -62,6 +62,11 @@ const POOL_CONFIG = {
         "address": "0xd10d359f50ba8d1e0b6c30974a65bf06895fba4bf2b692b2c75d987d3b6b863d"
       }
     },
+    "linea": {
+      "etherex": {
+        "address": "0x0ed01d983d65a1d624d1942ec268656987750acc"
+      }
+    }
   },
   "weETH": {
     "ethereum": {
@@ -324,6 +329,11 @@ const POOL_CONFIG = {
       "UniswapV3": {
         "address": "0xc36db4be4a3bfded1a98dc1017b01db62f34aa02c92c6febeb277c87a6152ee8"
       },
+    },
+    "linea": {
+      "etherex": {
+        "address": "0xd66d0e2454d9e0eee51440cd23215f46e7d20a83"
+      }
     }
   },
   "GHO": {
