@@ -66,6 +66,11 @@ const POOL_CONFIG = {
       "etherex": {
         "address": "0x0ed01d983d65a1d624d1942ec268656987750acc"
       }
+    },
+    "tac": {
+      "curve": {
+        "address": "0x1635D9ae7B8eF28b0aA9630a9F0A75160Bd677ef"
+      }
     }
   },
   "weETH": {
@@ -290,6 +295,11 @@ const POOL_CONFIG = {
         "address": "0x3fd37f91f23d9d4c2d999a8ad8eed716d29e207f",
       },
     },
+    "tac": {
+      "curve": {
+        "address": "0x76E28170713659bf213Bd985E39C3729f9618D4c"
+      }
+    }
   },
   "ezETH": {
     "ethereum": {
