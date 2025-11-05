@@ -405,10 +405,25 @@ const POOL_CONFIG = {
       //   "address": "0xb4d31111e6ff548f6fb43860da8de6fb932d5bb0"
       // }
     }
-  }
+  },
   //0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811
   // "pzETH": {
   // },
+  "USDG": {
+    "ethereum": {
+      "Curve": {
+        "address": "0xc061caa073f3d95f80f8e5428d32d2d76f5e1622"
+      },
+      "UniswapV4": {
+        "address": "0x0d3d26ec61a6c96d74153f62f67fbdcbb8cd9bca49e7901017e22d2b371efd02"
+      },
+    },
+    "ink": {
+      "Velodrome": {
+        "address": "0x31826a86cd62c6fa12a0a8441ec4c8bcfee8a453"
+      },
+    }
+  },
 };
 
 function getCacheKey(type, chainName, poolAddress) {
