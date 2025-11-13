@@ -110,6 +110,11 @@ const POOL_CONFIG = {
         "address": "0x4f919b2f681add2c0080cfbb1f3dd1ebc5af1415",
       },
     },
+    "avalanche": {
+      "Blackhole": {
+        "address": "0x930487d060fcd5fa7ff5167a8f5b6407bc7ca365"
+      }
+    }
   },
   "cbETH": {
     "ethereum": {
