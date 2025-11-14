@@ -379,6 +379,9 @@ const POOL_CONFIG = {
     "avalanche": {
       "LFJ": {
         "address": "0xd458e14e536c9586b66bfebd2783ad1093e3c5d1"
+      },
+      "Blackhole": {
+        "address": "0xe32f23b1894ec87eddee0947ce3d788a3eddd1e6"
       }
     }
   },
