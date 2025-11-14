@@ -236,6 +236,11 @@ const POOL_CONFIG = {
         "address": "0x060f2babc09826687be9cbf5c7ede3b3cd00dd78"
       },
     },
+    "ink": {
+      "Velodrome": {
+        "address": "0x62c92624b8583156fc9345a7a0ed8a1f6a9ad848"
+      }
+    }
   },
   "UNI": {
     "ethereum": {
